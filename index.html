@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A320 Knowledge Flashcards - Etihad Airways</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #D4AF37;
+            --secondary: #8B7355;
+            --dark: #0A0E27;
+            --darker: #050816;
+            --accent: #FFD700;
+            --text: #E8E8E8;
+            --success: #4ADE80;
+            --danger: #EF4444;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(212, 175, 55, 0.03) 0px, transparent 1px, transparent 2px, rgba(212, 175, 55, 0.03) 3px),
+                repeating-linear-gradient(90deg, rgba(212, 175, 55, 0.03) 0px, transparent 1px, transparent 2px, rgba(212, 175, 55, 0.03) 3px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 0.3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8)); }
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .category-select {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        select, button {
+            font-family: 'Share Tech Mono', monospace;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--primary);
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--text);
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+        }
+
+        select {
+            width: 100%;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
+            padding-right: 3rem;
+        }
+
+        button:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--primary);
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .flashcard-container {
+            perspective: 1500px;
+            margin-bottom: 2rem;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 900px;
+            min-height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            min-height: 400px;
+            backface-visibility: hidden;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(5, 8, 22, 0.95) 100%);
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+        }
+
+        .card-face::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(212, 175, 55, 0.03) 2px,
+                rgba(212, 175, 55, 0.03) 4px
+            );
+            pointer-events: none;
+        }
+
+        .card-front {
+            z-index: 2;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        .card-header {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-category {
+            font-size: 0.65rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+        }
+
+        .card-front .card-content {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .card-back .card-content {
+            color: var(--accent);
+        }
+
+        .card-footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 0.75rem;
+            color: var(--secondary);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.15rem;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--primary);
+        }
+
+        .btn-success {
+            background: rgba(74, 222, 128, 0.2);
+            border-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(212, 175, 55, 0.2);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .message {
+            text-align: center;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid var(--primary);
+            background: rgba(212, 175, 55, 0.1);
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .shuffle-icon {
+            display: inline-block;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 1.8rem;
+                letter-spacing: 0.2rem;
+            }
+
+            .card-face {
+                padding: 2rem;
+            }
+
+            .card-content {
+                font-size: 1rem;
+            }
+
+            .card-front .card-content {
+                font-size: 1.1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .category-select {
+                max-width: 100%;
+            }
+
+            .stats {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 0.75rem 1.5rem;
+            }
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            font-size: 1.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 0.8rem;
+            color: var(--secondary);
+            letter-spacing: 0.1rem;
+        }
+
+        footer .name {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="logo">A320 Knowledge</h1>
+            <p class="subtitle">Oral Validation Flashcards</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="controls">
+            <div class="category-select">
+                <select id="categorySelect">
+                    <option value="all">All Questions</option>
+                    <option value="general">General Limitations</option>
+                    <option value="aircon">Air Conditioning/Pressurization</option>
+                    <option value="autoflight">Auto Flight</option>
+                    <option value="fuel">Fuel Limitations</option>
+                    <option value="gear">Landing Gear</option>
+                    <option value="oxygen">Oxygen</option>
+                    <option value="apu">APU</option>
+                    <option value="powerplant">Powerplant</option>
+                    <option value="memory">Memory Items</option>
+                    <option value="policies">Operational Policies</option>
+                    <option value="calls">Emergency Calls</option>
+                </select>
+            </div>
+            <button id="shuffleBtn" class="btn-primary">
+                <span class="shuffle-icon">⟳</span> Shuffle
+            </button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Progress</div>
+                <div class="stat-value" id="progressStat">0/0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Known</div>
+                <div class="stat-value" id="knownStat">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Review</div>
+                <div class="stat-value" id="reviewStat">0</div>
+            </div>
+        </div>
+
+        <div id="messageArea"></div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="card-face card-front">
+                    <div class="card-category" id="categoryLabel"></div>
+                    <div class="card-header">
+                        <span>Question</span>
+                        <span id="cardNumber">1 / 50</span>
+                    </div>
+                    <div class="card-content" id="questionText">
+                        Click shuffle to start studying
+                    </div>
+                    <div class="card-footer">Click card to reveal answer</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-header">
+                        <span>Answer</span>
+                        <span id="cardNumberBack">1 / 50</span>
+                    </div>
+                    <div class="card-content" id="answerText">
+                        Answer will appear here
+                    </div>
+                    <div class="card-footer">Click card to see question</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button id="prevBtn" class="nav-btn btn-primary">← Previous</button>
+            <button id="knowBtn" class="nav-btn btn-success">✓ Know It</button>
+            <button id="reviewBtn" class="nav-btn btn-danger">✗ Review</button>
+            <button id="nextBtn" class="nav-btn btn-primary">Next →</button>
+        </div>
+
+        <footer>
+            <div>A320 Knowledge Validation Flashcards</div>
+            <div class="name">Lucas Balduino</div>
+        </footer>
+    </div>
+
+    <script>
+        // Flashcard data extracted from the PDF
+        const flashcards = [
+            // General Limitations
+            { category: 'general', question: 'What is the maximum operating altitude?', answer: '39,800 ft' },
+            { category: 'general', question: 'What is the maximum altitude at which the landing gear may be extended?', answer: 'There is no altitude limitation for landing gear extension' },
+            { category: 'general', question: 'What is the maximum altitude at which the slats/flaps may be extended?', answer: '20,000 ft' },
+            { category: 'general', question: 'What is the maximum tire speed? (Ground Speed)', answer: '195 kt' },
+            { category: 'general', question: 'What is the cockpit window open maximum speed?', answer: '200 kt' },
+            { category: 'general', question: 'What are the wipers maximum operating speed?', answer: '230 kt' },
+            { category: 'general', question: 'What is the maximum demonstrated or certified crosswind for takeoff/landing on a dry runway (Gusts Included)?', answer: 'It is greater than 30 knots. Exact values are as specified in the LIM Chapter. Refer to RCAM-EY SUPP for EY limitation.' },
+            { category: 'general', question: 'What is the maximum tailwind component for landing?', answer: '15 kt (A6-EIA – limitation is 10 kt)' },
+            { category: 'general', question: 'What is the maximum taxi speed?', answer: '• Maximum taxi speed is 30 kt\n• If weight is higher than 76 t, maximum taxi speed is 20 kt during turns\n• EY policy: maximum speed of 10kt during 90° turns\n• During LVP when RVR below 550m: 20kt or 10kt in obscuring phenomena' },
+            
+            // Air Conditioning/Pressurization
+            { category: 'aircon', question: 'What is the air conditioning limitation when using an LP Ground Unit?', answer: 'Do not use conditioned air simultaneously from PACKS and an LP ground unit.' },
+            { category: 'aircon', question: 'What is the air conditioning limitation when using an HP Ground Unit?', answer: 'Do not use an HP ground unit when the APU supplies bleed air.' },
+            
+            // Auto Flight Limitations
+            { category: 'autoflight', question: 'What is the minimum height for use of the autopilot on takeoff?', answer: '100 ft AGL and at least 5 sec after liftoff' },
+            { category: 'autoflight', question: 'What is the minimum height for use of the autopilot during a Non-Precision Approach?', answer: '250 ft AGL' },
+            { category: 'autoflight', question: 'What is the minimum height for use of the autopilot during a Circling Approach?', answer: 'A320: 500 ft AGL\nA321: 600 ft AGL' },
+            { category: 'autoflight', question: 'What is the minimum height for use of the autopilot during an ILS Approach with CAT1 displayed on the FMA?', answer: '160 ft AGL' },
+            { category: 'autoflight', question: 'What is the minimum height for engagement of the autopilot during a Go Around?', answer: '100 ft AGL' },
+            { category: 'autoflight', question: 'What is the minimum height for use of the autopilot during all phases other than takeoff, instrument approach or go-around?', answer: 'A320: 500 ft AGL\nA321: 900 ft AGL' },
+            { category: 'autoflight', question: 'What is the applicable Alert Height during a CAT 3 Fail Operational (Dual) ILS Automatic Approach?', answer: '100 ft' },
+            { category: 'autoflight', question: 'What is the aircraft approach Category?', answer: 'A320: CAT C\nA321: CAT D' },
+            
+            // Fuel Limitations
+            { category: 'fuel', question: 'What is the minimum fuel quantity for takeoff?', answer: '1,500kg. The ECAM alerts related to fuel low level in the wing tanks must not appear for takeoff.' },
+            
+            // Landing Gear
+            { category: 'gear', question: 'What is the maximum allowed brake temperature for takeoff?', answer: '• 300°C with brake fans off\n• 150°C if Brake Fans are running before TO\n\nNote: Pilots must not commence takeoff if brake temperatures exceed these limitations. Delaying L/G retraction to reduce brake temperature is not approved.' },
+            
+            // Oxygen
+            { category: 'oxygen', question: 'For what duration are all crew members protected by the oxygen system in the event of smoke with 100% Oxygen selected?', answer: 'It provides protection for 15 min at 8000 ft cabin altitude.\n\nNote: Times may be shorter for bearded crew.' },
+            
+            // APU Limitations
+            { category: 'apu', question: 'What is the limitation regarding consecutive start attempts of the APU?', answer: 'After 3 consecutive start attempts (duty cycles), a 60-minute cool down is required before the next start.' },
+            { category: 'apu', question: 'What is the maximum APU EGT limit for any phase of operation?', answer: 'The red line limit on the EGT scale' },
+            { category: 'apu', question: 'What is the minimum battery voltage to start the APU?', answer: '25.5 V with BATT pbsw OFF (if not elec. powered for 6hr or more)' },
+            { category: 'apu', question: 'What is the maximum altitude for starting and using the APU for electrical power?', answer: 'Aircraft Ceiling' },
+            { category: 'apu', question: 'What is the maximum altitude for attempting an APU start with the aircraft batteries only (ELEC EMER CONFIG)?', answer: '25,000 ft' },
+            { category: 'apu', question: 'What is the maximum altitude for using the APU Bleed with One Pack?', answer: '22,500 ft' },
+            { category: 'apu', question: 'What is the maximum altitude to use the APU bleed for an Engine Start?', answer: '20,000 ft' },
+            { category: 'apu', question: 'What is the maximum altitude for using the APU Bleed with Two Packs?', answer: '15,000 ft' },
+            { category: 'apu', question: 'What is the limitation of the APU regarding the use of wing anti-ice?', answer: 'APU air bleed extraction for wing anti-ice is not permitted.' },
+            
+            // Powerplant
+            { category: 'powerplant', question: 'What is the minimum oil temperature for takeoff? (A320/A321 IAE V25XX)', answer: '+50 deg C' },
+            { category: 'powerplant', question: 'What is the minimum oil temperature for takeoff? (A320neo/A321neo CFM LEAP-1A)', answer: '+19 deg C' },
+            { category: 'powerplant', question: 'What is the maximum time limit for using TOGA thrust?', answer: '5 Minutes under normal conditions\n10 Minutes in case of engine failure' },
+            { category: 'powerplant', question: 'What are the limitations regarding the use of Reverse Thrust?', answer: '1. Selection of reverse thrust in flight is prohibited\n2. Backing with reverse thrust is not permitted\n3. Maximum reverse should not be used below 70 knots\n4. Idle reverse is allowed down to aircraft stop' },
+            { category: 'powerplant', question: 'Is reduced thrust take-off allowed on contaminated runways?', answer: 'No' },
+            
+            // Memory Items - EGPWS
+            { category: 'memory', question: 'What are the memory items associated with EGPWS WARNINGS: "PULL UP", "TERRAIN AHEAD PULL UP", "OBSTACLE AHEAD PULL UP"?', answer: 'Announce: "PULL UP - TOGA" and simultaneously:\n• AP OFF\n• PITCH PULL UP (to full back stick)\n• THRUST LEVERS TOGA\n• SPEED BRAKE LEVER CHECK RETRACTED\n• BANK WINGS LEVEL or ADJUST\n\nDO NOT CHANGE CONFIGURATION (SLATS/FLAPS, GEAR) UNTIL CLEAR OF OBSTACLE.\n\nWhen flight path is safe and warning stops:\n- Reduce Pitch and accelerate\n\nWhen speed above VLS and V/S positive:\n- Clean up aircraft as required' },
+            { category: 'memory', question: 'What are the memory items for EGPWS CAUTIONS: "TERRAIN TERRAIN", "TOO LOW TERRAIN", "TERRAIN AHEAD", "OBSTACLE AHEAD"?', answer: '- During night or IMC apply the EGPWS WARNINGS procedure\n- During daylight and VMC with terrain and obstacles clearly in sight: FLIGHT PATH – ADJUST' },
+            { category: 'memory', question: 'What are the memory items for EGPWS CAUTIONS: "SINK RATE", "GLIDE SLOPE"?', answer: '- Above 1000 ft AAL IMC or above 500 ft AAL VMC: FLIGHT PATH – ADJUST\n- Below 1000 ft AAL IMC or below 500 ft AAL VMC: GO-AROUND – CONSIDER' },
+            { category: 'memory', question: 'What are the memory items for "DON\'T SINK" EGPWS CAUTION?', answer: 'FLIGHT PATH – ADJUST' },
+            { category: 'memory', question: 'What are the memory items for "TOO LOW GEAR" and "TOO LOW FLAPS" EGPWS CAUTIONS?', answer: 'GO-AROUND - PERFORM' },
+            
+            // Memory Items - Windshear
+            { category: 'memory', question: 'What are the memory items for Predictive Windshear alert "WINDSHEAR AHEAD" RED warning during Take-off?', answer: 'TAKEOFF:\n• Before Takeoff – Delay or select most favorable runway\n• During Takeoff Run – Reject Take Off (inhibited between 100kt and 50ft)\n• When Airborne – Apply TOGA/AP if engaged – Keep ON/follow SRS\n\nIt\'s permitted to change Slats/flaps configuration, provided A/C does not enter windshear.' },
+            { category: 'memory', question: 'What are the memory items for REACTIVE WINDSHEAR WARNING (aural 3x WINDSHEAR)?', answer: 'TAKEOFF:\n• Before V1 – RTO if significant speed variations occur below V1 and sufficient runway remains\n• After V1 – Announce: "WINDSHEAR TOGA" and apply TOGA / ROTATE at VR / SRS follow\n\nAIRBORNE: Initial climb or landing\nAnnounce: "WINDSHEAR TOGA" and:\n• TOGA / AP (keep if engaged) / SRS follow\n• DO NOT CHANGE CONFIG (FLAPS/SLATS/GEAR) UNTIL OUT OF WINDSHEAR\n\nIf necessary crew may apply full back stick' },
+            
+            // Memory Items - Other
+            { category: 'memory', question: 'What are the memory items for Unreliable Airspeed Indication?', answer: 'Announce: "UNRELIABLE SPEED" and then, if safe conduct of flight is impacted:\n• AP, A/THR, F/Ds - OFF\n• PITCH/THRUST:\n  - 15°/TOGA if Below THR RED ALT\n  - 10°/CLB if Above THR RED ALT and below FL100\n  - 5°/CLB if Above THR RED ALT and Above FL100\n• FLAPS - Maintain current configuration\n• Flaps (if CONF FULL) – Select CONF 3\n• SPEED BRAKES - Check Retracted\n• LANDING GEAR - Up\n\nWhen at, or above MSA or Circuit Altitude: Level off for troubleshooting.' },
+            { category: 'memory', question: 'What are the memory items for Loss of Braking?', answer: 'Announce: "LOSS OF BRAKING"\n\nIf no braking available:\n• REV – MAX\n• BRAKE PEDALS – RELEASE\n• A/SKID & N/W STRG – OFF "ORDER"\n• BRAKE PEDALS – PRESS\n• MAX BRK PR – 1000 PSI\n\nIf still no braking:\n• PARKING BRAKE – Short And Successive Applications' },
+            { category: 'memory', question: 'What are the memory items for TCAS Alerts? (A320/A321)', answer: 'Announce: "TCAS, I HAVE CONTROL"\n\nFor TA:\n• Do not perform maneuver based on TA only\n\nFor All RA, except CLIMB RA during approach in CONF 3 or FULL:\n• AP (if engaged) OFF\n• BOTH FDs OFF\n• VERTICAL SPEED Adjust/Maintain to keep in green area\n\nAny CLIMB RA during approach in CONF 3 or FULL:\n• GO AROUND – Perform (Follow SRS GA Mode)\n• VERTICAL SPEED Monitor\n\nRespect Stall, GPWS, or windshear warnings.\n▪ ATC – NOTIFY\n\nWhen "CLEAR OF CONFLICT":\n▪ ATC – NOTIFY\n▪ LATERAL AND VERTICAL GUIDANCE – ADJUST\n▪ AP/FD – AS RQRD' },
+            { category: 'memory', question: 'What are the indications of a stall?', answer: 'AURAL WARNING (STALL STALL) and/or buffet' },
+            { category: 'memory', question: 'What are the memory items for STALL RECOVERY?', answer: 'Announce – "STALL, I HAVE CONTROL"\n• NOSE DOWN PITCH CONTROL – APPLY\n• BANK – WINGS LEVEL\n\nWhen out of stall (no longer stall indications):\n• THRUST – INCREASE SMOOTHLY AS NEEDED\n• SPEEDBRAKES – CHECK RETRACTED\n• FLIGHT PATH – RECOVER SMOOTHLY\n\nIf in clean configuration and below 20,000 ft:\n• Select Flap 1' },
+            { category: 'memory', question: 'What are the memory items for STALL WARNING AT LIFTOFF?', answer: 'Announce: "STALL, TOGA 15°"\n• THRUST – TOGA\n• PITCH – 15°\n• BANK – WINGS LEVEL' },
+            { category: 'memory', question: 'What are the memory items for Emergency Descent?', answer: 'First pilot that notices excessive cabin altitude:\nANNOUNCE: "OXYGEN MASK – ON!"\n\nBOTH Pilots: Don oxygen mask & headset and establish communications.\n\nPF:\nAnnounce: "Emergency Descent"\nEMER DESCENT\n\nOn FCU:\n• ALT selector – TURN & PULL\n• HDG selector – TURN & PULL\n• SPD selector – PULL\nIf Structural Damage:\n• SPD/MACH pb – SPD\n\nOn PFD:\n• FMA – ANNOUNCE\n• Confirm – THR IDLE, OP DES, HDG\n\nIf A/THR not active:\n• THR LEVERS – IDLE\n• SPD BRK – FULL\n\nPM:\n• SIGNS – ON\n• FMA – CHECK' },
+            
+            // Operational Policies
+            { category: 'policies', question: 'What are the Company speed restrictions?', answer: 'Aircraft speed shall not exceed 250 KIAS below 10,000ft AAL or minimum clean speed, whichever is greater, unless specific speed is assigned by ATC, in which case speed shall not be greater than 250 KIAS below 5,000 ft AAL or minimum clean speed, whichever is greater.' },
+            { category: 'policies', question: 'What are the maximum allowable bank angles during takeoff?', answer: '• Minor heading changes (up to 10 degrees bank) are not considered a turn\n• 15 degrees at/above 300 ft AGL\n• 30 degrees at/above 500 ft AGL' },
+            { category: 'policies', question: 'What are the maximum permissible rates of climb/descent?', answer: 'Maximum vertical speed shall not exceed:\n• 2,000 ft/min when within 2,000 ft of cleared flight level/altitude\n• 1,500 ft/min when within 1,000 ft of cleared flight level/altitude\n\nHigher rates permissible during climb, cruise, descent, and approach only when:\n• Both PF and PM confirm absence of traffic that may compromise separation or result in TCAS TA/RA; or\n• When explicitly requested by ATC' },
+            { category: 'policies', question: 'What are the Company stabilisation approach criteria?', answer: 'Approach is stabilized when:\n1. All briefings complete\n2. Aircraft on vertical and lateral flight path\n3. Only small changes in heading/pitch necessary\n4. IAS within Vref to target speed +10 kts\n5. Thrust setting appropriate for configuration\n6. Aircraft in briefed landing configuration\n7. Rate of descent ≤1,000 ft/min (CAT C) or ≤1,200 ft/min (CAT D)\n8. All checklists complete\n9. ILS: within one dot of glide slope and localizer\n10. Non-precision: course deviation within ½ dot or 2.5° for VOR, 5° for NDB' },
+            { category: 'policies', question: 'What is the latest point for stabilization during precision and non-precision approaches?', answer: '• 1500 ft AAL is recommended for landing configuration\n• 1000 ft AAL is mandatory for stabilization when conducting instrument approach' },
+            { category: 'policies', question: 'What is Etihad\'s policy regarding landing within the touchdown zone?', answer: '• Desired touchdown zone lies between 300 to 600 m from landing threshold\n• If touchdown cannot be accomplished within desired touchdown zone, missed approach should normally be initiated with due regard to remaining runway length\n• Spool up of engines, aircraft speed and pitch attitude must be considered carefully' },
+            { category: 'policies', question: 'What is Etihad\'s policy regarding the decision to execute a go-around?', answer: '• Decision to initiate "Go-around" rests with Commander as long as aircraft is higher than 1,000 ft AAL\n• Below 1,000 ft AAL, "Go-around" shall be executed as soon as any operating flight crew member calls out "GO-AROUND", regardless of who is PF/PM' },
+            { category: 'policies', question: 'When is the Sterile Cockpit Policy in force?', answer: 'Commander shall ensure Sterile Cockpit Policy is in force:\n• From commencement of push back (or engine start when no pushback required), to Top of Climb (TOC)\n• From Top of Descent (TOD) until engine shut down on stand' },
+            { category: 'policies', question: 'What is the No Contact Period and when is it valid?', answer: 'During no-contact period there shall be no contact with flight deck from cabin crew.\n\nNo-contact period is from:\n• Application of takeoff power until undercarriage is retracted\n• Extension of undercarriage prior to landing, until aircraft has vacated runway' },
+            { category: 'policies', question: 'What is the priority of tasks for Flight Crew in all situations?', answer: 'In all situations flight crew shall prioritize:\n• Aviate\n• Navigate\n• Communicate' },
+            { category: 'policies', question: 'For fuel management, when is aircraft considered "in-flight"?', answer: 'Aircraft is considered in-flight at commencement of push back or after first engine start, whichever occurs first.' },
+            { category: 'policies', question: 'For MEL applicability, what defines commencement of flight?', answer: 'For MEL applicability, commencement of flight is defined as moment aircraft begins to move under its own power with intention of preparing for take-off.' },
+            { category: 'policies', question: 'When will Flight Deck crew declare "MINIMUM FUEL"?', answer: 'When having committed to land at specific aerodrome, any change in existing clearance may result in landing with less than planned final reserve fuel (FRF).' },
+            { category: 'policies', question: 'When will Flight Deck crew declare "MAYDAY FUEL"?', answer: 'When calculated usable fuel on landing, at nearest adequate airport where safe landing can be performed, is less than Final Reserve Fuel (FRF).' },
+            
+            // Emergency Calls
+            { category: 'calls', question: 'What is the standard PA to summon CM to flight deck for NITS briefing or pilot incapacitation?', answer: '"This is the Captain, Cabin Manager to the Flight Deck Immediately"' },
+            { category: 'calls', question: 'What is the standard PA for Rapid Deplaning?', answer: 'Time Available:\n"This is the Captain, Cabin Manager to the Flight Deck Immediately"\n\nAfter NITS or if time not available:\n"This is the Captain, Attention, Attention. This is an important announcement; all passengers must leave the aircraft via the nearest boarding door, in a quick and orderly manner. Leave all personal belongings behind and follow cabin crew instructions."' },
+            { category: 'calls', question: 'What is the standard PA to warn crew that abnormal event has arisen?', answer: '"This is the Captain, Attention Crew at Stations, Attention Crew at Stations"' },
+            { category: 'calls', question: 'What is the standard PA to inform Evacuation is NOT required after "Attention Crew at Stations"?', answer: '"This is the Captain, Normal Operations, Normal Operations, Passengers remain seated"' },
+            { category: 'calls', question: 'What is the standard PA to command an Evacuation?', answer: '"This is the Captain, Evacuate, Evacuate"' },
+            { category: 'calls', question: 'What is the standard PA 2 minutes before impact (forced landing, abnormal L/G, ditching)?', answer: '"This is the Captain, Attention Crew at Stations, Attention Crew at Stations"' },
+            { category: 'calls', question: 'What is the standard PA 30 seconds before impact?', answer: '"This is the Captain, BRACE, BRACE"' },
+            { category: 'calls', question: 'What is the standard PA for Emergency Descent?', answer: '"This is the Captain, Emergency descent, Emergency descent."' },
+            { category: 'calls', question: 'What is the standard PA when cabin altitude remains above 10,000ft during Emergency Descent level off?', answer: '"This is the Captain, Passengers and Crew remain on oxygen until advised."' },
+            { category: 'calls', question: 'What is the standard PA once cabin altitude is at/below 10,000ft after Emergency Descent?', answer: '"This is the Captain, Emergency Descent completed, Emergency descent completed."' },
+            { category: 'calls', question: 'What is the standard PA for Unexpected Moderate to Severe Turbulence?', answer: '"Cabin Crew be seated"' }
+        ];
+
+        let currentIndex = 0;
+        let filteredCards = [...flashcards];
+        let knownCount = 0;
+        let reviewCount = 0;
+        let isFlipped = false;
+
+        const flashcardElement = document.getElementById('flashcard');
+        const questionText = document.getElementById('questionText');
+        const answerText = document.getElementById('answerText');
+        const cardNumber = document.getElementById('cardNumber');
+        const cardNumberBack = document.getElementById('cardNumberBack');
+        const categoryLabel = document.getElementById('categoryLabel');
+        const progressFill = document.getElementById('progressFill');
+        const progressStat = document.getElementById('progressStat');
+        const knownStat = document.getElementById('knownStat');
+        const reviewStat = document.getElementById('reviewStat');
+        const categorySelect = document.getElementById('categorySelect');
+        const messageArea = document.getElementById('messageArea');
+
+        function formatText(text) {
+            // Replace bullet points
+            text = text.replace(/•/g, '•');
+            // Convert line breaks to <br>
+            text = text.replace(/\n/g, '<br>');
+            // Make bold text between asterisks
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            return text;
+        }
+
+        function updateCard() {
+            if (filteredCards.length === 0) {
+                questionText.innerHTML = 'No questions available for this category';
+                answerText.innerHTML = 'Select a different category';
+                cardNumber.textContent = '0 / 0';
+                cardNumberBack.textContent = '0 / 0';
+                categoryLabel.textContent = '';
+                return;
+            }
+
+            const card = filteredCards[currentIndex];
+            const categoryNames = {
+                'general': 'General Limitations',
+                'aircon': 'Air Conditioning / Pressurization',
+                'autoflight': 'Auto Flight',
+                'fuel': 'Fuel Limitations',
+                'gear': 'Landing Gear',
+                'oxygen': 'Oxygen',
+                'apu': 'APU',
+                'powerplant': 'Powerplant',
+                'memory': 'Memory Items',
+                'policies': 'Operational Policies',
+                'calls': 'Emergency Calls'
+            };
+            
+            // If card is flipped, unflip it first
+            if (isFlipped) {
+                flashcardElement.classList.remove('flipped');
+                isFlipped = false;
+                // Wait for flip animation to complete before updating content
+                setTimeout(() => {
+                    categoryLabel.textContent = categoryNames[card.category] || card.category;
+                    questionText.innerHTML = formatText(card.question);
+                    answerText.innerHTML = formatText(card.answer);
+                    cardNumber.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+                    cardNumberBack.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+                }, 300); // Half of the 0.6s transition time
+            } else {
+                // Card is already showing front, update immediately
+                categoryLabel.textContent = categoryNames[card.category] || card.category;
+                questionText.innerHTML = formatText(card.question);
+                answerText.innerHTML = formatText(card.answer);
+                cardNumber.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+                cardNumberBack.textContent = `${currentIndex + 1} / ${filteredCards.length}`;
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            progressStat.textContent = `${currentIndex + 1}/${filteredCards.length}`;
+            knownStat.textContent = knownCount;
+            reviewStat.textContent = reviewCount;
+            
+            const progress = ((currentIndex + 1) / filteredCards.length) * 100;
+            progressFill.style.width = `${progress}%`;
+        }
+
+        function showMessage(text, type = 'info') {
+            messageArea.innerHTML = `<div class="message">${text}</div>`;
+            setTimeout(() => {
+                messageArea.innerHTML = '';
+            }, 3000);
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Event Listeners
+        flashcardElement.addEventListener('click', () => {
+            flashcardElement.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard();
+            }
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                updateCard();
+            } else {
+                showMessage('You\'ve reached the end! Click shuffle to start over or select a new category.');
+            }
+        });
+
+        document.getElementById('knowBtn').addEventListener('click', () => {
+            knownCount++;
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                updateCard();
+            } else {
+                updateStats();
+                showMessage('Great job! You\'ve completed all cards!');
+            }
+        });
+
+        document.getElementById('reviewBtn').addEventListener('click', () => {
+            reviewCount++;
+            if (currentIndex < filteredCards.length - 1) {
+                currentIndex++;
+                updateCard();
+            } else {
+                updateStats();
+                showMessage('You\'ve marked this for review. Time to study these again!');
+            }
+        });
+
+        document.getElementById('shuffleBtn').addEventListener('click', () => {
+            filteredCards = shuffleArray(filteredCards);
+            currentIndex = 0;
+            knownCount = 0;
+            reviewCount = 0;
+            updateCard();
+            showMessage('Cards shuffled! Ready to study.');
+        });
+
+        categorySelect.addEventListener('change', (e) => {
+            const category = e.target.value;
+            if (category === 'all') {
+                filteredCards = [...flashcards];
+            } else {
+                filteredCards = flashcards.filter(card => card.category === category);
+            }
+            filteredCards = shuffleArray(filteredCards);
+            currentIndex = 0;
+            knownCount = 0;
+            reviewCount = 0;
+            updateCard();
+            
+            const categoryNames = {
+                'all': 'All Questions',
+                'general': 'General Limitations',
+                'aircon': 'Air Conditioning',
+                'autoflight': 'Auto Flight',
+                'fuel': 'Fuel',
+                'gear': 'Landing Gear',
+                'oxygen': 'Oxygen',
+                'apu': 'APU',
+                'powerplant': 'Powerplant',
+                'memory': 'Memory Items',
+                'policies': 'Operational Policies',
+                'calls': 'Emergency Calls'
+            };
+            showMessage(`Studying: ${categoryNames[category]} (${filteredCards.length} cards)`);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    document.getElementById('prevBtn').click();
+                    break;
+                case 'ArrowRight':
+                    document.getElementById('nextBtn').click();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    flashcardElement.click();
+                    break;
+                case 'k':
+                case 'K':
+                    document.getElementById('knowBtn').click();
+                    break;
+                case 'r':
+                case 'R':
+                    document.getElementById('reviewBtn').click();
+                    break;
+            }
+        });
+
+        // Initialize
+        filteredCards = shuffleArray(filteredCards);
+        updateCard();
+        showMessage('Welcome! Click shuffle to randomize cards, or select a category to begin studying. Use ← → arrows or click the card to flip.');
+    </script>
+</body>
+</html>
