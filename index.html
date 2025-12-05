@@ -887,10 +887,48 @@
             }
         });
 
+        // Touch swipe functionality for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let touchStartY = 0;
+        let touchEndY = 0;
+        const minSwipeDistance = 50;
+
+        flashcardElement.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        flashcardElement.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeDistanceX = touchEndX - touchStartX;
+            const swipeDistanceY = touchEndY - touchStartY;
+            
+            // Check if horizontal swipe is more significant than vertical
+            if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+                // Horizontal swipe
+                if (Math.abs(swipeDistanceX) > minSwipeDistance) {
+                    if (swipeDistanceX > 0) {
+                        // Swipe right - go to previous
+                        document.getElementById('prevBtn').click();
+                    } else {
+                        // Swipe left - go to next
+                        document.getElementById('nextBtn').click();
+                    }
+                }
+            }
+            // If it's a tap (minimal movement), let the flip handler deal with it
+        }
+
         // Initialize
         filteredCards = shuffleArray(filteredCards);
         updateCard();
-        showMessage('Welcome! Click shuffle to randomize cards, or select a category to begin studying. Use ← → arrows or click the card to flip.');
+        showMessage('Welcome! Swipe left/right or use ← → arrows to navigate. Tap card to flip. Use K for Known, R for Review.');
     </script>
 </body>
 </html>
