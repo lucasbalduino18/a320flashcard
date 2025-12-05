@@ -537,6 +537,7 @@
                     <option value="memory">Memory Items</option>
                     <option value="policies">Operational Policies</option>
                     <option value="calls">Emergency Calls</option>
+		    <option value="A321neo Landing">A321neo Landing</option>
                 </select>
             </div>
             <button id="shuffleBtn" class="btn-primary">
@@ -740,7 +741,14 @@
             { category: 'calls', question: 'What is the standard PA for Emergency Descent?', answer: '"This is the Captain, Emergency descent, Emergency descent."' },
             { category: 'calls', question: 'What is the standard PA when cabin altitude remains above 10,000ft during Emergency Descent level off?', answer: '"This is the Captain, Passengers and Crew remain on oxygen until advised."' },
             { category: 'calls', question: 'What is the standard PA once cabin altitude is at/below 10,000ft after Emergency Descent?', answer: '"This is the Captain, Emergency Descent completed, Emergency descent completed."' },
-            { category: 'calls', question: 'What is the standard PA for Unexpected Moderate to Severe Turbulence?', answer: '"Cabin Crew be seated"' }
+            { category: 'calls', question: 'What is the standard PA for Unexpected Moderate to Severe Turbulence?', answer: '"Cabin Crew be seated"' },
+	    { category: 'calls', question: 'What is the standard PA required to warn the cabin crew immediately after take-off that an abnormal event has arisen?', answer: '"This is the Captain, Attention Crew at Stations, Attention Crew at Stations"' },
+
+	    // A321neo Landing Characteristics
+	    { category: 'A321neo Landing', question: 'At what point during landing does the normal flight mode transition to flare mode on the Airbus A321neo?', answer: '• Transition to Flare Mode occurs at 100 ft RA; THS freezes, and no automatic pitch reduction is applied. \n• Flight controls revert to direct stick-to-elevator law, with no auto-trim. \n• Damping is provided by load-factor and pitch-rate feedback.  \n• Flare law provides full elevator authority and does not compensate for the ground or thrust reduction effects. Be ready to compensate for any nose-down movement. ' },
+	    { category: 'A321neo Landing', question: 'What is the flap deflection angle difference at Configuration FULL between the A321neo and the A321ceo?', answer: 'The A321neo has 9° greater flap deflection at Configuration FULL, with 34° compared to 25° on the A321ceo.' },
+	    { category: 'A321neo Landing', question: 'What is the operational effect of the increased flap deflection on the A321neo?', answer: 'The higher flap deflection on the A321neo results in a reduced pitch attitude on approach, often approaching 0° pitch under typical landing conditions.' }
+
         ];
 
         let currentIndex = 0;
@@ -794,7 +802,8 @@
                 'powerplant': 'Powerplant',
                 'memory': 'Memory Items',
                 'policies': 'Operational Policies',
-                'calls': 'Emergency Calls'
+                'calls': 'Emergency Calls',
+	 	'A321neo Landing': 'A321neo Landing Characteristics'
             };
             
             // If card is flipped, unflip it first
@@ -924,7 +933,8 @@
                 'powerplant': 'Powerplant',
                 'memory': 'Memory Items',
                 'policies': 'Operational Policies',
-                'calls': 'Emergency Calls'
+                'calls': 'Emergency Calls',
+		'A321neo Landing': 'A321neo Landing Characteristics'
             };
             showMessage(`Studying: ${categoryNames[category]} (${filteredCards.length} cards)`);
         });
