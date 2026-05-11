@@ -537,7 +537,8 @@
                     <option value="memory">Memory Items</option>
                     <option value="policies">Operational Policies</option>
                     <option value="calls">Emergency Calls</option>
-		    <option value="A321neo Landing">A321neo Landing</option>
+		            <option value="A321neo Landing">A321neo Landing</option>
+					<option value="Neo Variant">A320/321Neo variant</option>
                 </select>
             </div>
             <button id="shuffleBtn" class="btn-primary">
@@ -754,11 +755,11 @@
 	    { category: 'A321neo Landing', question: 'What is the operational effect of the increased flap deflection on the A321neo?', answer: 'The higher flap deflection on the A321neo results in a reduced pitch attitude on approach, often approaching 0° pitch under typical landing conditions.' }
 
         //A320/321Neo Variations
-        { category: 'Neo Variations', question: 'The following FMS-generated alerts are specific to the A321LR during ground and take-off operations:\n- NAV ON TAXIWAY \n- T.O RWY TOO SHORT\nWhen are these alerts triggered, and what do they indicate?', answer: '• NAV ON TAXIWAY – Triggered when the thrust levers are set to a position above or equal to the CLB detent and the FMS detects that the aircraft is not on the Runway.\n• T.O RWY TOO SHORT - Triggered when the engines are set to take-off power, and the TOS function determines that the computed liftoff distance is more than the available runway length.' },
-	    { category: 'Neo Variations', question: 'What are the required flight crew actions in the event of a possible loss of Glideslope (G/S) indication during an ILS approach?', answer: 'Prior to starting and arming the approach (APPR pb), verify G/S indication is available on one or both PFDs. Be prepared to transition to a LOC only or visual approach as required.\n\nAbove 1,000 ft AAL\n• Loss of G/S on one side only or G/S mode disengages:\no Select the autopilot associated with the PFD showing a valid G/S indication.\no On the affected side, select ROSE ILS.\n• G/S cannot be engaged or lost on both sides:\no If sufficient visual references are available, continue the approach manually.\no If visual references are insufficient, discontinue the approach or go around and revert to an alternate approach.\n\nBelow 1,000 ft AAL\n• Loss of G/S on one side or both sides:\no If sufficient visual references are available, continue the approach manually.\no If visual references are insufficient, discontinue the approach or go around and revert to an alternate approach.' },
-	    { category: 'Neo Variations', question: 'When should the flight crew apply the UNRELIABLE SPEED INDICATION QRH procedure on the A320neo/A321neo equipped with DBUS?', answer: 'When the “UNREL SPD PROC…….APPLY” is displayed on ECAM.\nIn very remote cases, the flight crew may have to apply the pitch/thrust tables which are located in “UNRELIABLE SPEED INDICATION” QRH procedure as aircraft equipped with DBUS will not display BUSS.' },
-		{ category: 'Neo Variations', question: 'True or False: The DBUS can be activated and deactivated at flight crew discretion.', answer: 'True. It can be activated or deactivated on CAPT side only, FO side only or both sides at the same side.' },
-		{ category: 'Neo Variations', question: 'True or False: When DBUS is active, the onside AP/FD and A/THR may remain engaged and STALL warning remains operative.', answer: 'False. When DBUS is active, the onside AP/FD and A/THR must be disconnected, and STALL warning remains operative.' }			
+        { category: 'Neo Variant', question: 'The following FMS-generated alerts are specific to the A321LR during ground and take-off operations:\n- NAV ON TAXIWAY \n- T.O RWY TOO SHORT\nWhen are these alerts triggered, and what do they indicate?', answer: '• NAV ON TAXIWAY – Triggered when the thrust levers are set to a position above or equal to the CLB detent and the FMS detects that the aircraft is not on the Runway.\n• T.O RWY TOO SHORT - Triggered when the engines are set to take-off power, and the TOS function determines that the computed liftoff distance is more than the available runway length.' },
+	    { category: 'Neo Variant', question: 'What are the required flight crew actions in the event of a possible loss of Glideslope (G/S) indication during an ILS approach?', answer: 'Prior to starting and arming the approach (APPR pb), verify G/S indication is available on one or both PFDs. Be prepared to transition to a LOC only or visual approach as required.\n\nAbove 1,000 ft AAL\n• Loss of G/S on one side only or G/S mode disengages:\no Select the autopilot associated with the PFD showing a valid G/S indication.\no On the affected side, select ROSE ILS.\n• G/S cannot be engaged or lost on both sides:\no If sufficient visual references are available, continue the approach manually.\no If visual references are insufficient, discontinue the approach or go around and revert to an alternate approach.\n\nBelow 1,000 ft AAL\n• Loss of G/S on one side or both sides:\no If sufficient visual references are available, continue the approach manually.\no If visual references are insufficient, discontinue the approach or go around and revert to an alternate approach.' },
+	    { category: 'Neo Variant', question: 'When should the flight crew apply the UNRELIABLE SPEED INDICATION QRH procedure on the A320neo/A321neo equipped with DBUS?', answer: 'When the “UNREL SPD PROC…….APPLY” is displayed on ECAM.\nIn very remote cases, the flight crew may have to apply the pitch/thrust tables which are located in “UNRELIABLE SPEED INDICATION” QRH procedure as aircraft equipped with DBUS will not display BUSS.' },
+		{ category: 'Neo Variant', question: 'True or False: The DBUS can be activated and deactivated at flight crew discretion.', answer: 'True. It can be activated or deactivated on CAPT side only, FO side only or both sides at the same side.' },
+		{ category: 'Neo Variant', question: 'True or False: When DBUS is active, the onside AP/FD and A/THR may remain engaged and STALL warning remains operative.', answer: 'False. When DBUS is active, the onside AP/FD and A/THR must be disconnected, and STALL warning remains operative.' }			
 			
         ];
 
@@ -815,7 +816,7 @@
                 'policies': 'Operational Policies',
                 'calls': 'Emergency Calls',
 	 	        'A321neo Landing': 'A321neo Landing Characteristics',
-				'Neo Variations': 'A320/A321Neo Variation'
+				'Neo Variant': 'A320/A321Neo Variant'
             };
             
             // If card is flipped, unflip it first
